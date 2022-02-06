@@ -1,5 +1,6 @@
 __pycache__
 .DS_Store
+.env
 db.sqlite3
 runme.sh
 migrations/
