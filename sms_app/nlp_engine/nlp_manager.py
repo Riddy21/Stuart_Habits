@@ -77,8 +77,7 @@ class NLP_Manager(object):
                 self.user.state = User.DIS
                 self.user.save()
 
-                msg = self._get_onboarding_message()
-                self._add_reply_msg(msg)
+                self._add_reply_msg('Welcome back %s!' % self.user.name)
                 return
 
         # Add the user msg to conversation hist
@@ -97,12 +96,11 @@ class NLP_Manager(object):
             self._add_reply_msg(msg)
             return
 
-        #elif self.user.state == User.TRA:
-        #    LOGGER.info('You are now in habit tracking')
-        #    #msg = self._get_discussion_response(received_msg)
-        #    # FIXME route to extract_habit_info function
-        #    #self._add_reply_msg(msg)
-        #    return
+        elif self.user.state == User.DAY:
+            LOGGER.info('You are now in routine daily message')
+            msg = self._get_onboarding_message()
+            self._add_reply_msg(msg)
+            return
         
         #elif self.user.state == User.MOD:
         #    LOGGER.info('You are now in habit modification')

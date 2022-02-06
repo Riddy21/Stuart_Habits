@@ -82,6 +82,7 @@ class User(models.Model):
     #TRA = 'Track achievement'
     #MOD = 'Habit modification'
     BRE = 'Breakdown'
+    DAY = 'Start of day message'
 
     # Identification info
     name = models.CharField(max_length=50, blank=True)
