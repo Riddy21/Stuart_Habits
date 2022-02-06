@@ -195,14 +195,16 @@ Example conversation
 Stu: You've done a great job, so I'll give you a $10 Starbucks gift card as a reward!
 %s: I didn't run today:(
 Stu: That sounds tough. Can you tell me more about why you didn't run?
-%s: So sad, I didn't get to meditate today.
-Stu: Aw that's ok. Can you think of a time when you DID meditate and what made that possible?
+%s: I just didn't feel like it
+Stu: That's totally understandable. Sometimes we just don't feel like doing something. But it's important to push through that feeling and do it anyways. Can you thinkk of a time when you did something even though you didn't feel like it?
+%s: Yes, I ran a marathon one time!
+Stu: That's amazing! You're a total champ. Remember how good you felt after you finished? That's what you can feel like every time you complete yur habit, even if you don't feel like it at the beginning.
 %s: I want to get into the habit of sleeping earlier everyday
 Stu: That's a great idea! I can keep track of that for you!
 
 Conversation
 ------------
-""" % (user, user, user, user, user, user, user, user)
+""" % (user, user, user, user, user, user, user, user, user)
 
     # Populate with conversation
     for message in conv_history:
