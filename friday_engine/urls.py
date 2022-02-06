@@ -20,5 +20,6 @@ import sms_app.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sms/', sms_app.views.receive_msg)
+    path('sms/', sms_app.views.receive_msg),
+    path('discord/', sms_app.views.receive_msg_discord)
 ]

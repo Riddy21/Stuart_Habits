@@ -29,6 +29,58 @@ def receive_msg(request):
 
     return HttpResponse(response, content_type='text/json')
 
+@csrf_exempt
+def receive_msg_discord(request):
+    if request.method == 'POST':
+        # decode and process request
+        sms = msgutil.decode_request(request)
+        name = sms['From'][0]
+        msg = sms['Body'][0]
+
+        reply = process_msg_discord(msg, name)
+        LOGGER.info('From Stu: %s', reply)
+
+    response = json.dumps([{'Success': reply}])
+
+    return HttpResponse(response, content_type='text/json')
+
+def process_msg_discord(received_msg, name):
+    # Find the user
+    user = User.find_user_from_name(name)
+    response_msgs = list()
+
+    if user is None:
+        # Prompt for username
+        response_msgs.append(NLP_Manager.get_first_time_greeting_msg())
+
+        # Create a user
+        user = User(name=name, state=User.DIS)
+        user.save()
+
+        # Create nlp manager
+        nlp_manager = NLP_Manager(user)
+
+        LOGGER.info("From %s: %s", user.name, received_msg)
+
+        # Prompt for daily motivation
+        msg = nlp_manager._get_onboarding_message()
+        LOGGER.info(msg)
+        nlp_manager._add_reply_msg(msg)
+
+        response_msgs.append(msg)
+        return response_msgs
+
+    else:
+        # Create nlp manager
+        nlp_manager = NLP_Manager(user)
+        LOGGER.info("From %s: %s", user.name, received_msg)
+
+        nlp_manager.process_message(received_msg)
+        response_msgs = nlp_manager.get_response()
+
+        return [i[1] for i in response_msgs]
+    
+
 def process_msg(received_msg, phone_num):
     # Find the user
     user = User.find_user_from_phone(phone_num)
@@ -68,7 +120,8 @@ def process_msg(received_msg, phone_num):
 
 
 def send_msg(msg, phone_num):
-    msgutil.send_test_message(msg, phone_num)
+    LOGGER.info('From Stu: %s', msg)
+    #msgutil.send_test_message(msg, phone_num)
     # FIXME: replace with this when done testing
-    # msgutil.send_message(msg, phone_num)
+    msgutil.send_message(msg, phone_num)
 
