@@ -36,7 +36,17 @@ def bot():
             # If the message is not sent by a bot
             if not message.author.bot:
                 mention = f'{client.user.id}'
-                if mention in message.content:
+                if message.channel.type == discord.ChannelType.private:
+                    # Remove tag from user name and replace space with underscore
+                    author = str(message.author.name).replace(" ", "_")
+                    # Command the bot to reply to the message
+                    server_response = request_to_server(author, str(message.content).replace("<@!939569482312077332>", "").replace("<@939569482312077332>", ""))
+                    for msg in server_response:
+                        dm = await message.author.create_dm()  # Creates a dm channel with the user
+                        await dm.send(msg)
+
+
+                elif mention in message.content:
                     # Remove tag from user name and replace space with underscore
                     author = str(message.author.name).replace(" ", "_")
                     # Command the bot to reply to the message
